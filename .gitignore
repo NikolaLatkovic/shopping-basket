@@ -1,0 +1,39 @@
+# sbt
+target/
+project/target/
+project/project/
+.cache
+.history
+lib_managed/
+*.class
+*.log
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+*.swp
+*.swo
+*~
+
+# Scala IDE / Build tools
+.metals/
+.bloop/
+.bsp/
+.metals/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# JAR files (keep source, ignore built artifacts)
+*.jar
+!lib/*.jar
+
+# Scala
+*.class
+*.cache
+

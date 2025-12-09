@@ -1,0 +1,38 @@
+#!/bin/bash
+# Change to script directory to ensure relative paths work from any location
+# Resolve symlinks to get the actual script location
+SCRIPT_PATH="$0"
+while [ -L "$SCRIPT_PATH" ]; do
+  SCRIPT_PATH="$(readlink "$SCRIPT_PATH")"
+  # If relative symlink, resolve relative to original directory
+  if [[ "$SCRIPT_PATH" != /* ]]; then
+    SCRIPT_PATH="$(dirname "$0")/$SCRIPT_PATH"
+  fi
+done
+SCRIPT_DIR="$(cd "$(dirname "$SCRIPT_PATH")" && pwd)"
+cd "$SCRIPT_DIR"
+
+# Read version from VERSION file
+if [ ! -f "VERSION" ]; then
+  echo "Error: VERSION file not found"
+  exit 1
+fi
+
+VERSION=$(cat VERSION 2>/dev/null | tr -d '\n\r ')
+
+if [ -z "$VERSION" ]; then
+  echo "Error: VERSION file is empty or contains no version number"
+  exit 1
+fi
+
+JAR_PATH="target/scala-2.13/shopping-basket-${VERSION}.jar"
+
+# Check if JAR exists
+if [ ! -f "$JAR_PATH" ]; then
+  echo "Error: JAR file not found: $JAR_PATH"
+  echo "Please build the JAR first by running: cd $SCRIPT_DIR && sbt assembly"
+  exit 1
+fi
+
+# Run the application
+java -jar "$JAR_PATH" "$@"
